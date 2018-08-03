@@ -18,6 +18,7 @@ namespace Challenge_1
 
             while (true)
             {
+                //Menu
                 Console.Clear();
                 Console.Write($"{outPut}" +
                     $"What action would you like to do?\n" +
@@ -30,6 +31,7 @@ namespace Challenge_1
 
                 string response = Console.ReadLine();
 
+                //AddItem
                 if (response == "1")
                 {
                     Console.Clear();
@@ -60,6 +62,7 @@ namespace Challenge_1
                     outPut = $"{newName} has been added to the menu as item number {itemCount}.\n";
                 }
 
+                //View List
                 else if (response == "2")
                 {
                     Console.Clear();
@@ -77,6 +80,7 @@ namespace Challenge_1
                     Console.ReadLine();
                 }
 
+                //Remove Item
                 else if (response == "3")
                 {
                     Console.Clear();
@@ -87,31 +91,41 @@ namespace Challenge_1
                     }
                     else
                     {
-                        Console.Write("Enter the menu item number you want to remove: ");
-                        int num = Convert.ToInt32(Console.ReadLine());
-                        foreach (Menu item in menu)
-                        {
-                            if (num == item.MealNumber)
-                            {
-                                Console.Write($"Are you sure you would like to delete {item.MealName} from the menu?\n" +
-                                    $"(Y/N): ");
-                                string delResponse = Console.ReadLine().ToLower();
-                                if (delResponse == "y")
-                                {
-                                    num--;
-                                    menuRepo.RemoveItem(menu[num]);
-                                    outPut = $"{item.MealName} has been removed to the menu.\n";
+                        int num;
 
-                                    foreach (Menu oldItem in menu)
+                        Console.Write("Enter the menu item number you want to remove: ");
+                        bool isNumber = Int32.TryParse(Console.ReadLine(), out num);
+                        if (isNumber)
+                        {
+                            foreach (Menu item in menu)
+                            {
+                                if (num == item.MealNumber)
+                                {
+                                    Console.Write($"Are you sure you would like to delete {item.MealName} from the menu?\n" +
+                                        $"(Y/N): ");
+                                    string delResponse = Console.ReadLine().ToLower();
+                                    if (delResponse == "y")
                                     {
-                                        int spot = menu.IndexOf(oldItem);
-                                        spot++;
-                                        oldItem.MealNumber = spot;
+                                        num--;
+                                        menuRepo.RemoveItem(menu[num]);
+                                        outPut = $"{item.MealName} has been removed to the menu.\n";
+
+                                        foreach (Menu oldItem in menu)
+                                        {
+                                            int spot = menu.IndexOf(oldItem);
+                                            spot++;
+                                            oldItem.MealNumber = spot;
+                                        }
+                                        itemCount--;
                                     }
-                                    itemCount--;
+                                    break;
                                 }
-                                break;
                             }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid input, please enter the menu item ID number");
+                            Console.ReadLine();
                         }
                     }
                 }

@@ -69,6 +69,7 @@ namespace Challenge_5
                     Console.Clear();
                     customerList.Sort((x, y) => string.Compare(x.LastName, y.LastName));
                     Console.WriteLine("UserID\tFirst\tLast\tCustomer Type\tEmail Sent");
+                    customerRepo.Recount();
                     foreach (Customer customer in customerList)
                     {
                         string email = null;
@@ -91,11 +92,79 @@ namespace Challenge_5
                 }
                 else if (input == "3") 
                 {
+                    Console.Clear();
 
+                    Console.Write("Enter the customer ID you would like to update: ");
+                    int response = Int32.Parse(Console.ReadLine());
+                    if(customerList.Exists(x => x.UserID == response))
+                    {
+                        foreach (Customer customer in customerList)
+                        {
+                            if (customer.UserID == response)
+                            {
+                                Console.WriteLine($"1. First Name: {customer.FirstName}" +
+                                    $"\n2. Last Name: {customer.LastName}" +
+                                    $"\n3. Customer Type: {customer.Type}" +
+                                    $"\n4. Return to Menu" +
+                                    $"\n\nEnter the number to update: ");
+                                int updateResponse = Int32.Parse(Console.ReadLine());
+                                switch (updateResponse)
+                                {
+                                    case 1:
+                                        Console.Write("Enter new First Name: ");
+                                        customer.FirstName = Console.ReadLine();
+                                        break;
+                                    case 2:
+                                        Console.Write("Enter new Last Name: ");
+                                        customer.LastName = Console.ReadLine();
+                                        break;
+                                    case 3:
+                                        Console.WriteLine($"Enter new Customer Type: " +
+                                            $"\n\t1. Potential" +
+                                            $"\n\t2. Current" +
+                                            $"\n\t3. Past");
+                                        int updatedType = Int32.Parse(Console.ReadLine());
+
+                                        if (updatedType == 1)
+                                            customer.Type = CustomerType.Potential;
+                                        else if (updatedType == 2)
+                                            customer.Type = CustomerType.Current;
+                                        else if (updatedType == 3)
+                                            customer.Type = CustomerType.Past;
+                                        else
+                                            Console.WriteLine("Invalid type.");
+                                        break;
+                                    case 4:
+                                        Console.WriteLine("Press ENTER to return to main menu");
+                                        break;
+                                    default:
+                                        Console.WriteLine("Invalid Input");
+                                        break;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    else
+                        Console.WriteLine($"No user exists with that ID.");
+
+                    Console.ReadLine();
                 }
                 else if (input == "4")
                 {
+                    Console.Clear();
 
+                    Console.Write("Enter the user's ID you would like to remove: ");
+                    int response = Int32.Parse(Console.ReadLine());
+                    if (customerList.Exists(x => x.UserID == response))
+                    {
+                        customerRepo.RemoveCustomer(response);
+                        Console.WriteLine("User Removed.");
+                    }
+                    else
+                        Console.WriteLine($"No user exists with that ID.");
+
+                    Console.ReadLine();
                 }
                 else if (input == "5")
                 {

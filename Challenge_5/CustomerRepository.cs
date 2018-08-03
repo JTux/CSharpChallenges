@@ -25,20 +25,22 @@ namespace Challenge_5
             _customerList.Add(newCustomer);
         }
 
+        public void Recount()
+        {
+            foreach (Customer customer in _customerList)
+            {
+                customer.UserID = (_customerList.IndexOf(customer) + 1);
+            }
+        }
+
         public void RemoveCustomer(int customerID)
         {
             int idNum = customerID;
             idNum--;
+
             _customerList.Remove(_customerList[idNum]);
+            Recount();
 
-            foreach (Customer customer in _customerList)
-            {
-                int userPosition = _customerList.IndexOf(customer);
-                int expectedID = userPosition + 1;
-
-                if(customer.UserID != expectedID)
-                    customer.UserID--;
-            }
             customerCount--;
         }
     }
